@@ -1692,6 +1692,22 @@ p{
 .entries .item-entry__date a {
   color: rgba(0, 0, 0, 0.8);
 }
+.entries .item-entry__author {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: .2rem;
+  position: absolute;
+  left: 50%;
+  bottom: 5.0rem;
+  width: 100%;
+  -webkit-transform: translate3d(-50%, 0, 0);
+  -ms-transform: translate3d(-50%, 0, 0);
+  transform: translate3d(-50%, 0, 0);
+}
+
+.entries .item-entry__date a {
+  color: rgba(0, 0, 0, 0.8);
+}
 
 .entries-wrap + .pagination-wrap {
   margin-top: 3.6rem;

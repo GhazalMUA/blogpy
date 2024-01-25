@@ -8,9 +8,9 @@ class UserProfileAdmin(admin.ModelAdmin):
     list_per_page= 2
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display =['title','created_at','author','promote']
+    list_display =['title','created_at','author','promote', 'cover']
     search_fields=('title',)
-    list_per_page= 2
+    list_per_page= 10
 
 
 class CategoryAdmin(admin.ModelAdmin):
