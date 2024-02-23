@@ -31,5 +31,3 @@ if settings.DEBUG:
     urlpatterns += static('/contact/static', document_root=settings.STATIC_ROOT)
     urlpatterns += static('/aboutt/static', document_root=settings.STATIC_ROOT)
 
-
-    

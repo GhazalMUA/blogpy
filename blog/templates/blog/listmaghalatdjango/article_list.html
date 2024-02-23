@@ -1,0 +1,26 @@
+{%extends 'listmaghalatdjango/base.html'%}
+{% block main %}
+<header>
+    <h1>Article List</h1>
+</header>
+
+<div class="container">
+    {% if articles %}
+        <ul>
+            {% for article in articles %}
+                <li>
+                    <h2>{{ article.title }}</h2>
+                    <p> {{ article.content }} </p>
+                    <h2>{{ article.author }}</h2>
+                    <p>{{ article.created_at }}</p>
+
+
+                    <!-- Add more fields as needed -->
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No articles available.</p>
+    {% endif %}
+</div>
+{%endblock%}

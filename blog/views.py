@@ -1,13 +1,20 @@
+from typing import Any
+from django.db.models.base import Model as Model
+from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from rest_framework import generics
+from rest_framework.generics import ListCreateAPIView
+from .serializers import *
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from . import serializers
-# from django.http.response import status
+
+
 class IndexPage(TemplateView):
-    def get(self, request, **kwargs):
+    def get(self, request,**kwargs):
         article_data =[]
         articles= Article.objects.all().order_by('-created_at')[:9]
         for article in articles:
@@ -35,7 +42,7 @@ class IndexPage(TemplateView):
             'promote_list' : promote_list ,
             'article_data':article_data
         }     
-        return render(request, 'index.html', context)
+        return render(request, 'blog/index.html', context)
 
 class ContactPage(TemplateView):
     template_name= 'page-contact.html'
@@ -108,7 +115,7 @@ class SearchContentAPIView(APIView):
 
 
 #######submit a article 
-class SubmitArticleAPIViws(APIView):
+class SubmitArticleAPIView(APIView):
     def post(self,request,format=None):
         try:
             serializer=serializers.SubmitArticleSerializer(data=request.data)
@@ -135,23 +142,10 @@ class SubmitArticleAPIViws(APIView):
             article.promote=promote
             article.save()
             return Response({'status':'ok'}, status=status.HTTP_200_OK)
-            
-            
-
-
-
-
-
-
-
-
-
-
-
-
+        
         except:
             return Response({'status':'internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR) 
-                    
+        
 
 
 
@@ -159,19 +153,98 @@ class SubmitArticleAPIViws(APIView):
 class UpdateCoverAPIview(APIView):
     def post(self,request,format=None):
         try:
-        #    begir=request.GET['article_id']
-        #    moredenazar=Article.objects.filter(article_id='article_id')
             serializer= serializers.UpdateCoverSerializer(data=request.data)
             if serializer.is_valid():
                 article_id=serializer.data.get('article_id')
                 cover=request.FILES['cover']
-                # moredenazar=Article()
-                # article_id='article_id'
-                # cover= 'cover'
-                # moredenazar.save()
+
             else:
                 return Response({'status':'kharab kardi'}, status=status.HTTP_200_OK)
             Article.objects.filter(id=article_id).update(cover=cover)
             return Response ({'status':'ok'}, status=status.HTTP_200_OK )
         except:
             return Response({'status':'internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)        
+        
+
+
+#####delete an article
+class DeleteArticleAPIView(APIView):
+    def post(self,request,Format=None):
+        try:
+            serializer= serializers.DeleteArticleSerializer(data=request.data)
+            if serializer.is_valid():
+              article_id=serializer.data.get('article_id')
+              Article.objects.filter(id=article_id).delete()
+              return Response ({'status':'ok'}, status=status.HTTP_200_OK )
+        
+            else:
+                return Response({'status':'bad'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
+
+            
+        except:
+            return Response({'status':'internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)        
+
+
+
+
+
+
+
+
+
+
+
+
+"""mehran"""
+
+
+
+
+
+
+##########api vase liste tamame userha (userslist API)
+class AllUsersAPI(generics.ListCreateAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileAPISerializer
+
+
+
+
+###########gheyre api ye view ba template sade baraye naamayeshe hame (articlelist)
+from django.views.generic import ListView
+class ListArticlesMVT(ListView):
+    queryset=Article.objects.all()
+    model=Article
+    template_name= 'listmaghalatdjango/article_list.html'
+    context_object_name = 'articles' 
+    
+
+
+###### ba api namayeshe tak user ba primary key marboot bhsh
+from rest_framework.generics import RetrieveAPIView
+class NamayeshtakiUserAPI(RetrieveAPIView):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileAPISerializer
+
+
+
+#####NAMAYESH TAK MAGHALE django mvt
+from django.views.generic import DetailView
+from django.shortcuts import get_object_or_404
+
+class TakMaghaleMVT(DetailView):
+    def get_object(self,):
+        return get_object_or_404(Article.objects.all(), pk=self.kwargs.get('pk'))
+    
+
+    # model = Article
+    # queryset = Article.objects.all
+    # context_object_name = 'articles'
+    # pk_url_kwarg = "pk"
+
+
+
+def detail(request,shomare):
+    art=Article.objects.get(id=shomare)
+    return render(request, 'blog/detail.html', {'art':art})
+
