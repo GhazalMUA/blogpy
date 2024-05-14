@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'ckeditor' ,
     'blog',
     'rest_framework',
 ]
@@ -88,7 +87,7 @@ DATABASES = {
     }
 }
 
-
+#postgres=# psql -d postgres -U ghazalhafezi
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 

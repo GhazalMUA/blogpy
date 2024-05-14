@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [   
     path('', views.IndexPage.as_view(), name='index'),
+    path('detail/<int:int>' , views.DetailView.as_view(), name='detail'),
     path('contact/', views.ContactPage.as_view(), name='contact'),
     path('about/' , views.AboutPage.as_view(), name='about'),
     path('article/' , views.SimpleArticleAPIView.as_view(), name='simple_article'),
@@ -20,10 +21,5 @@ urlpatterns = [
     
     path('hameuserhaAPI/<int:pk>' , views.NamayeshtakiUserAPI.as_view(), name ='namayeshtaki'),
     path('listarticles/<int:pk>' , views.TakMaghaleMVT.as_view(), name ='TakMaghaleMVT'),
-
-
-
-    #amirbig/base/django
-    path('detail/<int:shomare>/' , views.detail , name='detail'),
 ]
    

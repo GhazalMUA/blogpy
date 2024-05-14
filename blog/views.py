@@ -3,6 +3,7 @@ from django.db.models.base import Model as Model
 from django.db.models.query import QuerySet
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views import View
 from rest_framework import generics
 from rest_framework.generics import ListCreateAPIView
 from .serializers import *
@@ -44,11 +45,19 @@ class IndexPage(TemplateView):
         }     
         return render(request, 'blog/index.html', context)
 
+
+class DetailView(View):
+    def get(self,request,int):
+        article=Article.objects.filter(id=int)
+        return render (request , 'blog/detail.html', {'article':article})
+
+
+
 class ContactPage(TemplateView):
-    template_name= 'page-contact.html'
+    template_name= 'blog/page-contact.html'
     
 class AboutPage(TemplateView):
-    template_name='page-about.html'    
+    template_name='blog/page-about.html'    
 
  
 ########
